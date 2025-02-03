@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clínica Veterinária</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans bg-gray-100">
+
+  <!-- Navbar -->
+  <nav class="bg-blue-600 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <a href="#" class="text-white text-2xl font-bold">Clínica Vet</a>
+      <div class="hidden md:flex space-x-4">
+        <a href="#home" class="text-white hover:text-blue-200">Home</a>
+        <a href="#services" class="text-white hover:text-blue-200">Serviços</a>
+        <a href="#schedule" class="text-white hover:text-blue-200">Agende uma Consulta</a>
+        <a href="#contact" class="text-white hover:text-blue-200">Contato</a>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden text-white">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden bg-blue-600 text-white space-y-4 p-4 hidden">
+    <a href="#home" class="block">Home</a>
+    <a href="#services" class="block">Serviços</a>
+    <a href="#schedule" class="block">Agende uma Consulta</a>
+    <a href="#contact" class="block">Contato</a>
+  </div>
+
+  <!-- Home Section -->
+<section id="home" class="relative bg-cover bg-center h-96" style="background-image: url('https://source.unsplash.com/1600x900/?pets,veterinary');">
+    <!-- Fundo azul escuro com opacidade -->
+    <div class="absolute inset-0 bg-blue-900 opacity-70"></div>
+    <div class="absolute inset-0 flex items-center justify-center flex-col">
+      <h1 class="text-white text-4xl font-semibold text-center">Cuide do seu melhor amigo!</h1>
+      <!-- Foto do Pet -->
+      <img src="assets/Gato2.jpeg" alt="Pet" class="mt-6 rounded-full shadow-lg w-34 h-32 object-cover">
+    </div>
+  </section>
+  
+  <!-- Services Section -->
+  <section id="services" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-blue-600 mb-6">Nossos Serviços</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-600">Consultas</h3>
+          <p class="text-gray-700 mt-4">Oferecemos consultas veterinárias para o diagnóstico e cuidados de todos os tipos de animais de estimação.</p>
+        </div>
+        <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-600">Vacinas</h3>
+          <p class="text-gray-700 mt-4">Imunização para proteger seu animal contra doenças comuns. Estamos atualizados com todas as vacinas necessárias.</p>
+        </div>
+        <div class="bg-blue-100 p-6 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-blue-600">Emergências</h3>
+          <p class="text-gray-700 mt-4">Atendimento emergencial para animais em situações críticas. Estamos preparados para situações urgentes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Schedule Section -->
+<section id="schedule" class="py-16 bg-gray-100">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-blue-600 mb-6">Agende uma Consulta</h2>
+      <form id="agendamento-form" class="space-y-6">
+        <div>
+          <label for="name" class="block text-lg font-medium text-gray-700">Nome do Pet</label>
+          <input type="text" id="name" name="name" class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div>
+          <label for="date" class="block text-lg font-medium text-gray-700">Data da Consulta</label>
+          <input type="date" id="date" name="date" class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div>
+          <label for="message" class="block text-lg font-medium text-gray-700">Mensagem</label>
+          <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Descreva o problema ou necessidades do seu pet"></textarea>
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">Agendar Consulta</button>
+      </form>
+    </div>
+  </section>
+  
+  <script>
+    document.getElementById('agendamento-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+  
+      const formData = new FormData(event.target);
+      const data = new URLSearchParams();
+      
+      formData.forEach((value, key) => {
+        data.append(key, value);
+      });
+  
+      try {
+        const response = await fetch('/agendamento', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: data,
+        });
+  
+        const result = await response.text();
+        alert(result);
+      } catch (error) {
+        console.error('Erro ao enviar os dados:', error);
+        alert('Erro ao enviar o agendamento. Tente novamente.');
+      }
+    });
+  </script>
+  
+
+  <!-- Contact Section -->
+<section id="contact" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto text-center">
+      <h2 class="text-3xl font-bold text-blue-600 mb-6">Entre em Contato</h2>
+      <p class="text-gray-700 mb-6">Estamos à disposição para atender você e seu animal. Entre em contato conosco para mais informações.</p>
+      <div class="space-x-4">
+        <!-- WhatsApp Link -->
+        <a href="https://wa.me/5513981430940" class="text-blue-600 hover:text-blue-800" target="_blank">Ligue ou envie mensagem pelo WhatsApp</a>
+        <!-- Phone Link -->
+        <a href="tel:+5513981430940" class="text-blue-600 hover:text-blue-800">Ligue para nós</a>
+        <!-- Email Link -->
+        <a href="mailto:elvispereira070@gmail.com" class="text-blue-600 hover:text-blue-800">Envie um e-mail</a>
+      </div>
+    </div>
+  </section>
+  
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 py-4 text-center text-white">
+    <p>&copy; 2025 Clínica Veterinária.</p>
+  </footer>
+
+  <script>
+    // Toggle the mobile menu visibility
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+  </script>
+
+</body>
+</html>
